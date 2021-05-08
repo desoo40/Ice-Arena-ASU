@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ice_Arena_ASU"
         mc:Ignorable="d"
-        Title="Автоматизированная система управления ледовым дворцом" Height="450" Width="800">
+        Title="Автоматизированная система управления ледовым дворцом" Height="719.5" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
@@ -20,18 +20,26 @@
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Непредвиденные расходы"
-                      Height="280" Width="327" 
+                      Margin="15"
                       Grid.Column="0">
-                
-                <Button Content="Добавить расход"
-                        VerticalAlignment="Bottom"
-                        Width="137" Height="28"/>
+
+
+                <ListView ItemsSource="{Binding Transactions}" Margin="10" Foreground="#FFFB1721">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Date}">Дата</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+
+                </ListView>
             </GroupBox>
-            
+
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="3"/>
 
             <GroupBox Header="Доходы"
-                      Height="280" Width="327" 
+                      Margin="15"
                       Grid.Column="1">
 
                 <Button Content="Добавить доход"
@@ -72,11 +80,5 @@
                     Height="28"/>
 
         </Grid>
-        
-        
-        
-        
-        
-        
     </Grid>
 </Window>
