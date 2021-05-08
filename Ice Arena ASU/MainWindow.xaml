@@ -5,8 +5,78 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ice_Arena_ASU"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Автоматизированная система управления ледовым дворцом" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="Непредвиденные расходы"
+                      Height="280" Width="327" 
+                      Grid.Column="0">
+                
+                <Button Content="Добавить расход"
+                        VerticalAlignment="Bottom"
+                        Width="137" Height="28"/>
+            </GroupBox>
+            
+            <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="3"/>
+
+            <GroupBox Header="Доходы"
+                      Height="280" Width="327" 
+                      Grid.Column="1">
+
+                <Button Content="Добавить доход"
+                        VerticalAlignment="Bottom"
+                        Width="137" Height="28"/>
+            </GroupBox>
+
+        </Grid>
+
+        <GridSplitter  VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="3"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Content="Постоянные расходы"
+                    Grid.Column="0"
+                    Width="139"
+                    Height="28"/>
+
+            <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                          Height="28" Width="3"/>
+
+            <Button Content="Прибыль за месяц"
+                    Grid.Column="1"
+                    Width="139"
+                    Height="28"/>
+
+            <GridSplitter Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                          Height="28" Width="3"/>
+
+            <Button Content="Доход/расход в месяц"
+                    Grid.Column="2"
+                    Width="139"
+                    Height="28"/>
+
+        </Grid>
+        
+        
+        
+        
+        
         
     </Grid>
 </Window>
