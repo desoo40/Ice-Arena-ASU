@@ -75,11 +75,8 @@ namespace Ice_Arena_ASU
 
         private void btn_addExpense_Click(object sender, RoutedEventArgs e)
         {
-            
-            var expenseName = tb_name.Text.ToString();
-            var expenseAmount = Convert.ToInt32(tb_amount.Text);
-
-            Database.AddTransaction(Operation.Expense, expenseName, expenseAmount);
+            var wind = new AddOperationWindow();
+            wind.Show();
         }
     }
 }
