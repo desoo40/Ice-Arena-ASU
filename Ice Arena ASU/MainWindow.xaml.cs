@@ -35,11 +35,13 @@ namespace Ice_Arena_ASU
 
         }
 
-        public List<Transaction> Transactions { get; set; } 
+        public List<Transaction> Transactions { get; set; }
+        private db Database { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            Database = new db();
 
             Transactions = new List<Transaction>();
 
@@ -52,6 +54,32 @@ namespace Ice_Arena_ASU
             Transactions.Add(tr3);
 
             DataContext = this;
+        }
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Database.AddTransaction(Operation.Expense, "test"+DateTime.Now, 69);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var transactions = Database.GetTransactionsByPeriod(DateTime.Now.AddDays(-30), DateTime.Now);
+            var result = "Transactions:\n";
+            foreach(var t in transactions)
+            {
+                result += t + "\n";
+            }
+            MessageBox.Show(result);
+        }
+
+        private void btn_addExpense_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var expenseName = tb_name.Text.ToString();
+            var expenseAmount = Convert.ToInt32(tb_amount.Text);
+
+            Database.AddTransaction(Operation.Expense, expenseName, expenseAmount);
         }
     }
 }

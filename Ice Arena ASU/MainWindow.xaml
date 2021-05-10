@@ -20,11 +20,11 @@
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Непредвиденные расходы"
-                      Margin="15"
+                      Margin="15,15,15,94"
                       Grid.Column="0">
 
 
-                <ListView ItemsSource="{Binding Transactions}" Margin="10" Foreground="#FFFB1721">
+                <ListView Margin="10" Foreground="#FFFB1721">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
@@ -32,6 +32,7 @@
                             <GridViewColumn  DisplayMemberBinding="{Binding Date}">Дата</GridViewColumn>
                         </GridView>
                     </ListView.View>
+                    <Button Content="Button" Height="100" Width="75"/>
 
                 </ListView>
             </GroupBox>
@@ -44,8 +45,11 @@
 
                 <Button Content="Добавить доход"
                         VerticalAlignment="Bottom"
-                        Width="137" Height="28"/>
+                        Width="137" Height="28" Click="Button_Click_1"/>
             </GroupBox>
+            <Button x:Name="btn_addExpense" Content="Добавить расход" HorizontalAlignment="Left" Margin="212,501,0,0" VerticalAlignment="Top" Width="142" Height="58" Click="btn_addExpense_Click"/>
+            <TextBox x:Name="tb_name" HorizontalAlignment="Left" Height="23" Margin="31,501,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152"/>
+            <TextBox x:Name="tb_amount" HorizontalAlignment="Left" Height="23" Margin="31,536,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="152"/>
 
         </Grid>
 
@@ -61,7 +65,7 @@
             <Button Content="Постоянные расходы"
                     Grid.Column="0"
                     Width="139"
-                    Height="28"/>
+                    Height="28" Click="Button_Click"/>
 
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
