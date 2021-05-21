@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,22 +21,8 @@ namespace Ice_Arena_ASU
     /// </summary>
     public partial class MainWindow : Window
     {
-        public class Transaction
-        {
-            public string Name { get; set; }
-            public decimal Amount { get; set; }
-            public DateTime Date { get; set; }
-
-            public Transaction(string name, decimal amount, DateTime date)
-            {
-                Name = name;
-                Amount = amount;
-                Date = date;
-            }
-
-        }
-
-        public List<Transaction> Transactions { get; set; }
+        public ObservableCollection<Transaction> Incomes { get; set; }
+        public ObservableCollection<Transaction> Expenses { get; set; }
         private db Database { get; set; }
 
         public MainWindow()
@@ -43,19 +30,41 @@ namespace Ice_Arena_ASU
             InitializeComponent();
             Database = new db();
 
-            Transactions = new List<Transaction>();
-
-            var tr1 = new Transaction("Ice", 5000, DateTime.Today);
-            var tr2 = new Transaction("Skates", 25000, DateTime.Today);
-            var tr3 = new Transaction("Sticks", 53000, DateTime.Today);
-
-            Transactions.Add(tr1);
-            Transactions.Add(tr2);
-            Transactions.Add(tr3);
+            Expenses = new ObservableCollection<Transaction>();
+            Incomes = new ObservableCollection<Transaction>();
 
             DataContext = this;
+
+            SetStat();
         }
 
+        private void SetStat()
+        {
+            decimal expenses = 0;
+            decimal incomes = 0;
+
+            foreach (var el in Expenses)
+                expenses += el.Amount;
+
+            foreach (var el in Incomes)
+                incomes += el.Amount;
+
+            decimal profit = incomes - expenses;
+
+            tblockIncome.Text = incomes.ToString();
+            tblockIncome.Foreground = Brushes.Green;
+
+            tblockExpense.Text = expenses.ToString();
+            tblockExpense.Foreground = Brushes.Red;
+
+            tbProfit.Text = profit.ToString();
+            tbProfit.Foreground = Brushes.Black;
+
+            if (profit > 0)
+                tbProfit.Foreground = Brushes.Green;
+            if (profit < 0)
+                tbProfit.Foreground = Brushes.Red;
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
@@ -75,8 +84,24 @@ namespace Ice_Arena_ASU
 
         private void btn_addExpense_Click(object sender, RoutedEventArgs e)
         {
-            var wind = new AddOperationWindow();
-            wind.Show();
+            var wind = new AddOperationWindow("Расход");
+            wind.ShowDialog();
+
+            if (wind.trans != null)
+                Expenses.Add(wind.trans);
+
+            SetStat();
+        }
+
+        private void btn_addIncome_Click(object sender, RoutedEventArgs e)
+        {
+            var wind = new AddOperationWindow("Доход");
+            wind.ShowDialog();
+            
+            if (wind.trans != null)
+                Incomes.Add(wind.trans);
+
+            SetStat();
         }
     }
 }

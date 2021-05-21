@@ -124,6 +124,28 @@ namespace Ice_Arena_ASU
             }
             return transactions;
         }
+
+        public List<Transaction> GetIncomes()
+        {
+            var transactions = new List<Transaction>();
+            var cmd = _conn.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM _transaction";
+            try
+            {
+                var reader = cmd.ExecuteReader();
+                while (reader.Read() && reader.HasRows)
+                {
+                    var transaction = $"{reader["id"]},{reader["transaction_date"]},{reader["operation_id"]},{reader["name"]},{reader["amount"]}";
+                    transactions.Add(n);
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return transactions;
+        }
+
         public int GetOperationIdByName(string name)
         {
             var cmd = _conn.CreateCommand();

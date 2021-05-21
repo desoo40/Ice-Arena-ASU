@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid>
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="10*"/>
@@ -32,12 +32,12 @@
                     Расходы
                 </TextBlock>
 
-                <ListView Margin="10" Grid.Row="1" Foreground="#FFFB1721">
+                <ListView ItemsSource="{Binding Expenses}" Margin="10" Grid.Row="1" Foreground="#FFFB1721">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
                             <GridViewColumn  DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Date}">Дата</GridViewColumn>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -49,6 +49,35 @@
             </Grid>
             
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center" Width="3"/>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="20">
+                    Доходы
+                </TextBlock>
+
+                <ListView ItemsSource="{Binding Incomes}" Margin="10" Grid.Row="1" Foreground="Green">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
+                            <GridViewColumn  DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Button x:Name="btn_addIncome" 
+                        Grid.Row="2"
+                        Width="137" Height="28"
+                        Content="Добавить доход" Click="btn_addIncome_Click"/>
+            </Grid>
 
         </Grid>
 
@@ -69,18 +98,36 @@
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
 
-            <Button Content="Прибыль за месяц"
-                    Grid.Column="1"
-                    Width="139"
-                    Height="28"/>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock FontSize="25">
+                Прибыль
+                </TextBlock>
+                <TextBlock x:Name="tbProfit" FontSize="25">
+                
+                </TextBlock>
+            </StackPanel>
+            
+            
 
             <GridSplitter Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
 
-            <Button Content="Доход/расход в месяц"
-                    Grid.Column="2"
-                    Width="139"
-                    Height="28"/>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock FontSize="20">
+                Доход
+                </TextBlock>
+                <TextBlock x:Name="tblockIncome" FontSize="20">
+
+                </TextBlock>
+                <TextBlock FontSize="20">
+                Расход
+                </TextBlock>
+                <TextBlock x:Name="tblockExpense" FontSize="20">
+
+                </TextBlock>
+            </StackPanel>
 
         </Grid>
     </Grid>
