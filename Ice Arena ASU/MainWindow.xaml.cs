@@ -40,14 +40,25 @@ namespace Ice_Arena_ASU
 
         private void SetStat()
         {
+            var inc = Database.GetIncomes();
+            var exp = Database.GetExpenses();
+
+            Incomes.Clear();
+            Expenses.Clear();
+
             decimal expenses = 0;
             decimal incomes = 0;
 
-            foreach (var el in Expenses)
+            foreach (var el in exp)
+            {
+                Expenses.Add(el);
                 expenses += el.Amount;
-
-            foreach (var el in Incomes)
+            }
+            foreach (var el in inc)
+            {
+                Incomes.Add(el);
                 incomes += el.Amount;
+            }
 
             decimal profit = incomes - expenses;
 
@@ -64,22 +75,7 @@ namespace Ice_Arena_ASU
                 tbProfit.Foreground = Brushes.Green;
             if (profit < 0)
                 tbProfit.Foreground = Brushes.Red;
-        }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Database.AddTransaction(Operation.Expense, "test"+DateTime.Now, 69);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var transactions = Database.GetTransactionsByPeriod(DateTime.Now.AddDays(-30), DateTime.Now);
-            var result = "Transactions:\n";
-            foreach(var t in transactions)
-            {
-                result += t + "\n";
-            }
-            MessageBox.Show(result);
         }
 
         private void btn_addExpense_Click(object sender, RoutedEventArgs e)
@@ -88,7 +84,12 @@ namespace Ice_Arena_ASU
             wind.ShowDialog();
 
             if (wind.trans != null)
-                Expenses.Add(wind.trans);
+                Database.AddTransaction(
+                    Operation.Expense,
+                    wind.trans.Name,
+                    wind.trans.Amount,
+                    wind.trans.Date
+                );
 
             SetStat();
         }
@@ -97,11 +98,29 @@ namespace Ice_Arena_ASU
         {
             var wind = new AddOperationWindow("Доход");
             wind.ShowDialog();
-            
+
             if (wind.trans != null)
-                Incomes.Add(wind.trans);
+                Database.AddTransaction(
+                    Operation.Income,
+                    wind.trans.Name,
+                    wind.trans.Amount,
+                    wind.trans.Date
+                );
 
             SetStat();
+        }
+
+        private void btnDeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            Database.DeleteAll();
+            SetStat();
+        }
+
+        private void btnDelById_Click(object sender, RoutedEventArgs e)
+        {
+            Database.DeleteById(tbIdDel.Text);
+            SetStat();
+
         }
     }
 }

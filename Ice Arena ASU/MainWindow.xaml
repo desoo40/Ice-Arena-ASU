@@ -35,9 +35,10 @@
                 <ListView ItemsSource="{Binding Expenses}" Margin="10" Grid.Row="1" Foreground="#FFFB1721">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
+                            <GridViewColumn Width="25" DisplayMemberBinding="{Binding Id}">ID</GridViewColumn>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
+                            <GridViewColumn Width="100" DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
+                            <GridViewColumn Width="75" DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -66,9 +67,10 @@
                 <ListView ItemsSource="{Binding Incomes}" Margin="10" Grid.Row="1" Foreground="Green">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
-                            <GridViewColumn  DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
+                            <GridViewColumn Width="25" DisplayMemberBinding="{Binding Id}">ID</GridViewColumn>
+                            <GridViewColumn Width="150" DisplayMemberBinding="{Binding Name}">Название</GridViewColumn>
+                            <GridViewColumn Width="100" DisplayMemberBinding="{Binding Amount}">Сумма</GridViewColumn>
+                            <GridViewColumn Width="75" DisplayMemberBinding="{Binding Date, StringFormat=d}">Дата</GridViewColumn>
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -88,17 +90,47 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Button Content="Постоянные расходы"
-                    Grid.Column="0"
-                    Width="139"
-                    Height="28" Click="Button_Click"/>
+            <Grid Grid.Column="0" Margin="10,25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+               
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <TextBlock  VerticalAlignment="Center">
+                    Удалить по Id
+                    </TextBlock>
+                    <TextBox x:Name="tbIdDel" Margin="10,0" Width="25"></TextBox>
+                    <Button x:Name="btnDelById" Padding="4" Click="btnDelById_Click">Удалить</Button>
+                </StackPanel>
+
+                <Button x:Name="btnDeleteAll" Grid.Row="1" VerticalAlignment="Center" Padding="5"
+                            HorizontalAlignment="Center" Background="#FFFBA8A8" Click="btnDeleteAll_Click">
+                    Удалить все записи
+                </Button>
+                
+            </Grid>
+            
 
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
 
-            <StackPanel Grid.Column="1" HorizontalAlignment="Center"
+            <Button Content="Постоянные расходы"
+                    Grid.Column="1"
+                    Width="139"
+                    Height="28"/>
+
+            <GridSplitter Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                          Height="28" Width="3"/>
+            
+            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                 <TextBlock FontSize="25">
                 Прибыль
@@ -107,13 +139,11 @@
                 
                 </TextBlock>
             </StackPanel>
-            
-            
 
             <GridSplitter Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
 
-            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+            <StackPanel Grid.Column="3" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                 <TextBlock FontSize="20">
                 Доход

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace Ice_Arena_ASU
 {
@@ -90,11 +91,11 @@ namespace Ice_Arena_ASU
                 Console.WriteLine(ex.Message);
             }
         }
-        public void AddTransaction(Operation operation, string name, int amount)
+        public void AddTransaction(Operation operation, string name, decimal amount, DateTime date)
         {
             var operation_id = GetOperationIdByName(operation.ToString());
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"INSERT INTO _transaction (transaction_date, operation_id, name, amount) VALUES('{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff")}',{operation_id},'{name}',{amount})";
+            cmd.CommandText = $"INSERT INTO _transaction (transaction_date, operation_id, name, amount) VALUES('{date.ToString("yyyy-MM-dd")}',{operation_id},'{name}',{amount})";
             try
             {
                 cmd.ExecuteNonQuery();
@@ -125,18 +126,77 @@ namespace Ice_Arena_ASU
             return transactions;
         }
 
-        public List<Transaction> GetIncomes()
+        internal void DeleteById(string text)
         {
-            var transactions = new List<Transaction>();
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM _transaction";
+            cmd.CommandText = $"DELETE FROM _transaction WHERE id = {text}";
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        internal void DeleteAll()
+        {
+            var cmd = _conn.CreateCommand();
+            cmd.CommandText = $"DELETE FROM _transaction";
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        public ObservableCollection<Transaction> GetIncomes()
+        {
+            var transactions = new ObservableCollection<Transaction>();
+            var cmd = _conn.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Income.ToString())}";
             try
             {
                 var reader = cmd.ExecuteReader();
                 while (reader.Read() && reader.HasRows)
                 {
-                    var transaction = $"{reader["id"]},{reader["transaction_date"]},{reader["operation_id"]},{reader["name"]},{reader["amount"]}";
-                    transactions.Add(n);
+                    var transaction = new Transaction(
+                        reader["id"].ToString(),
+                        reader["name"].ToString(),
+                        reader["amount"].ToString(),
+                        reader["transaction_date"].ToString());
+
+                    transactions.Add(transaction);
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return transactions;
+        }
+
+        public ObservableCollection<Transaction> GetExpenses()
+        {
+            var transactions = new ObservableCollection<Transaction>();
+            var cmd = _conn.CreateCommand();
+            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Expense.ToString())}";
+            try
+            {
+                var reader = cmd.ExecuteReader();
+                while (reader.Read() && reader.HasRows)
+                {
+                    var transaction = new Transaction(
+                        reader["id"].ToString(),
+                        reader["name"].ToString(),
+                        reader["amount"].ToString(),
+                        reader["transaction_date"].ToString());
+
+                    transactions.Add(transaction);
                 }
             }
             catch (SQLiteException ex)
