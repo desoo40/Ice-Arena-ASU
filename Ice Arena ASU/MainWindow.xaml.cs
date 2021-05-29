@@ -40,8 +40,20 @@ namespace Ice_Arena_ASU
 
         private void SetStat()
         {
-            var inc = Database.GetIncomes();
-            var exp = Database.GetExpenses();
+            var fromTxt = dpFrom.Text;
+            var toTxt = dpTo.Text;
+
+            if (fromTxt == "")
+                fromTxt = "1200-01-01";
+
+            if (toTxt == "")
+                toTxt = "3000-01-01";
+
+            var from = Convert.ToDateTime(fromTxt);
+            var to = Convert.ToDateTime(toTxt);
+
+            var inc = Database.GetIncomes(from, to);
+            var exp = Database.GetExpenses(from, to);
 
             Incomes.Clear();
             Expenses.Clear();
@@ -72,9 +84,21 @@ namespace Ice_Arena_ASU
             tbProfit.Foreground = Brushes.Black;
 
             if (profit > 0)
+            {
                 tbProfit.Foreground = Brushes.Green;
+                tbProfitName.Text = "Прибыль";
+            }
+
             if (profit < 0)
+            {
+                tbProfitName.Text = "Убыток";
                 tbProfit.Foreground = Brushes.Red;
+            }
+            if (profit == 0)
+            {
+                tbProfitName.Text = "В ноль";
+                tbProfit.Foreground = Brushes.Black;
+            }
 
         }
 
@@ -112,7 +136,11 @@ namespace Ice_Arena_ASU
 
         private void btnDeleteAll_Click(object sender, RoutedEventArgs e)
         {
-            Database.DeleteAll();
+            var res = MessageBox.Show("Точно удалить?", "Подтвертиде удаление", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.Yes)
+                Database.DeleteAll();
+            
             SetStat();
         }
 
@@ -121,6 +149,16 @@ namespace Ice_Arena_ASU
             Database.DeleteById(tbIdDel.Text);
             SetStat();
 
+        }
+
+        private void DpTo_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetStat();
+        }
+
+        private void DpFrom_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetStat();
         }
     }
 }

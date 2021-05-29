@@ -122,17 +122,20 @@
             <GridSplitter Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
 
-            <Button Content="Постоянные расходы"
-                    Grid.Column="1"
-                    Width="139"
-                    Height="28"/>
+            <StackPanel Margin="10" Grid.Column="1">
+                <TextBlock Margin="3,0">От</TextBlock>
+                <DatePicker x:Name="dpFrom" Margin="3" SelectedDateChanged="DpFrom_SelectedDateChanged"></DatePicker>
+                <TextBlock Margin="3,0">До</TextBlock>
+                <DatePicker x:Name="dpTo"  Margin="3" SelectedDateChanged="DpTo_SelectedDateChanged"></DatePicker>
+
+            </StackPanel>
 
             <GridSplitter Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                           Height="28" Width="3"/>
             
             <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                <TextBlock FontSize="25">
+                <TextBlock x:Name="tbProfitName" FontSize="25">
                 Прибыль
                 </TextBlock>
                 <TextBlock x:Name="tbProfit" FontSize="25">

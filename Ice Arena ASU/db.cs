@@ -95,7 +95,7 @@ namespace Ice_Arena_ASU
         {
             var operation_id = GetOperationIdByName(operation.ToString());
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"INSERT INTO _transaction (transaction_date, operation_id, name, amount) VALUES('{date.ToString("yyyy-MM-dd")}',{operation_id},'{name}',{amount})";
+            cmd.CommandText = $"INSERT INTO _transaction (transaction_date, operation_id, name, amount) VALUES('{date:yyyy-MM-dd}',{operation_id},'{name}',{amount})";
             try
             {
                 cmd.ExecuteNonQuery();
@@ -109,7 +109,7 @@ namespace Ice_Arena_ASU
         {
             var transactions = new List<string>();
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM _transaction WHERE transaction_date >= '{from.ToString("yyyy-MM-dd HH:mm:ss.fff")}' and transaction_date <= '{to.ToString("yyyy-MM-dd HH:mm:ss.fff")}'";
+            cmd.CommandText = $"SELECT * FROM _transaction WHERE transaction_date >= '{@from:yyyy-MM-dd HH:mm:ss.fff}' and transaction_date <= '{to:yyyy-MM-dd HH:mm:ss.fff}'";
             try
             {
                 var reader = cmd.ExecuteReader();
@@ -154,11 +154,12 @@ namespace Ice_Arena_ASU
             }
         }
 
-        public ObservableCollection<Transaction> GetIncomes()
+        public ObservableCollection<Transaction> GetIncomes(DateTime from , DateTime to)
         {
             var transactions = new ObservableCollection<Transaction>();
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Income.ToString())}";
+            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Income.ToString())} and " +
+                              $"transaction_date >= '{@from:yyyy-MM-dd}' and transaction_date <= '{to:yyyy-MM-dd}'";
             try
             {
                 var reader = cmd.ExecuteReader();
@@ -180,11 +181,12 @@ namespace Ice_Arena_ASU
             return transactions;
         }
 
-        public ObservableCollection<Transaction> GetExpenses()
+        public ObservableCollection<Transaction> GetExpenses(DateTime from, DateTime to)
         {
             var transactions = new ObservableCollection<Transaction>();
             var cmd = _conn.CreateCommand();
-            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Expense.ToString())}";
+            cmd.CommandText = $"SELECT * FROM _transaction WHERE operation_id = {GetOperationIdByName(Operation.Expense.ToString())} and " +
+                              $"transaction_date >= '{@from:yyyy-MM-dd}' and transaction_date <= '{to:yyyy-MM-dd}'";
             try
             {
                 var reader = cmd.ExecuteReader();
